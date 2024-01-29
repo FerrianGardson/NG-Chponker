@@ -1,4 +1,4 @@
-print ("Чпонькер активирован, вбейте /chponker или /cp для настройки.")
+print("Чпонькер активирован, вбейте /chponker или /cp для настройки.")
 
 -- Создание объекта для хранения состояний звуковых уведомлений
 local chponker_checker = {
@@ -8,9 +8,32 @@ local chponker_checker = {
     party = true,
     raid = true,
     whisper = true,
-    background = true,
+    background = true
 }
 
+--Функция для заглушения игры
+
+local function SoundOff()
+    -- Отключаем музыку
+    SetCVar("Sound_EnableMusic", 0)
+
+    -- Отключаем звуки
+    SetCVar("Sound_EnableSFX", 0)
+    SetCVar("Sound_EnableAmbience", 0)
+    SetCVar("Sound_EnableDialog", 0)
+    SetCVar("Sound_EnableErrorSpeech", 0)
+end
+
+local function SoundOn()
+    -- Включаем музыку
+    SetCVar("Sound_EnableMusic", 1)
+
+    -- Включаем звуки
+    SetCVar("Sound_EnableSFX", 1)
+    SetCVar("Sound_EnableAmbience", 1)
+    SetCVar("Sound_EnableDialog", 1)
+    SetCVar("Sound_EnableErrorSpeech", 1)
+end
 
 
 -- Функция для проигрывания звука
@@ -28,7 +51,7 @@ local function handleChatEvent(self, event, ...)
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\yell.wav"
     elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE") and chponker_checker.emote then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
-    -- Добавьте остальные типы событий с аналогичной логикой
+        -- Добавьте остальные типы событий с аналогичной логикой
     end
 
     -- Если есть звук, проиграйте его
@@ -36,8 +59,6 @@ local function handleChatEvent(self, event, ...)
         playSound(soundFile)
     end
 end
-
-
 
 -- Регистрация фрейма для событий чата
 local chatFrame = CreateFrame("FRAME")
@@ -51,7 +72,6 @@ chatFrame:SetScript("OnEvent", handleChatEvent)
 
 -- Теперь chponker_checker содержит параметры для каждого типа сообщений, и они все инициализированы значением true
 -- Вы можете использовать chponker_checker.say, chponker_checker.yell и т. д., чтобы проверить, включен ли звук для конкретного типа сообщения
-
 
 -- Создаем окно настроек звуковых уведомлений
 local ChponkerFrame = CreateFrame("Frame", "ChponkerFrame", UIParent, "BasicFrameTemplate")
@@ -87,35 +107,35 @@ ChponkerFrame.Checkbox1:SetPoint("TOPLEFT", 10, -50)
 ChponkerFrame.Checkbox1:SetChecked(ChponkerFrame.Checkbox1)
 ChponkerFrame.Checkbox1:SetScript("OnClick", function(self)
     chponker_checker.say = not chponker_checker.say
-    print("Статус переменной say:", chponker_checker.say)
+    print("say:", chponker_checker.say)
 end)
 ChponkerFrame.Checkbox1.label = ChponkerFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ChponkerFrame.Checkbox1.label:SetPoint("LEFT", ChponkerFrame.Checkbox1, "RIGHT", 5, 0)
 ChponkerFrame.Checkbox1.label:SetText("Речь")
 
--- Создаем чекбокс для Эмоутов
+-- Создаем чекбокс для Криков
 ChponkerFrame.Checkbox2 = CreateFrame("CheckButton", "ChponkerFrame_Checkbox2", ChponkerFrame, "UICheckButtonTemplate")
 ChponkerFrame.Checkbox2:SetPoint("TOPLEFT", ChponkerFrame.Checkbox1, "BOTTOMLEFT", 0, 0)
-ChponkerFrame.Checkbox2:SetChecked(chponker_checker.emote)
+ChponkerFrame.Checkbox2:SetChecked(chponker_checker.yell)
 ChponkerFrame.Checkbox2:SetScript("OnClick", function(self)
-    chponker_checker.emote = not chponker_checker.emote
-    print("Статус переменной emote:", chponker_checker.emote)
+    chponker_checker.yell = not chponker_checker.yell
+    print("yell:", chponker_checker.yell)
 end)
 ChponkerFrame.Checkbox2.label = ChponkerFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ChponkerFrame.Checkbox2.label:SetPoint("LEFT", ChponkerFrame.Checkbox2, "RIGHT", 5, 0)
-ChponkerFrame.Checkbox2.label:SetText("Эмоуты")
+ChponkerFrame.Checkbox2.label:SetText("Крики")
 
--- Создаем чекбокс для Криков
+-- Создаем чекбокс для Эмоутов
 ChponkerFrame.Checkbox3 = CreateFrame("CheckButton", "ChponkerFrame_Checkbox3", ChponkerFrame, "UICheckButtonTemplate")
 ChponkerFrame.Checkbox3:SetPoint("TOPLEFT", ChponkerFrame.Checkbox2, "BOTTOMLEFT", 0, 0)
-ChponkerFrame.Checkbox3:SetChecked(chponker_checker.yell)
+ChponkerFrame.Checkbox3:SetChecked(chponker_checker.emote)
 ChponkerFrame.Checkbox3:SetScript("OnClick", function(self)
-    chponker_checker.yell = not chponker_checker.yell
-    print("Статус переменной yell:", chponker_checker.yell)
+    chponker_checker.emote = not chponker_checker.emote
+    print("emote:", chponker_checker.emote)
 end)
 ChponkerFrame.Checkbox3.label = ChponkerFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ChponkerFrame.Checkbox3.label:SetPoint("LEFT", ChponkerFrame.Checkbox3, "RIGHT", 5, 0)
-ChponkerFrame.Checkbox3.label:SetText("Крики")
+ChponkerFrame.Checkbox3.label:SetText("Эмоуты")
 
 -- Создаем чекбокс для Группы
 ChponkerFrame.Checkbox4 = CreateFrame("CheckButton", "ChponkerFrame_Checkbox4", ChponkerFrame, "UICheckButtonTemplate")
@@ -123,7 +143,7 @@ ChponkerFrame.Checkbox4:SetPoint("LEFT", ChponkerFrame.Checkbox1.label, "RIGHT",
 ChponkerFrame.Checkbox4:SetChecked(chponker_checker.party)
 ChponkerFrame.Checkbox4:SetScript("OnClick", function(self)
     chponker_checker.party = not chponker_checker.party
-    print("Статус переменной party:", chponker_checker.party)
+    print("party:", chponker_checker.party)
 end)
 ChponkerFrame.Checkbox4.label = ChponkerFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ChponkerFrame.Checkbox4.label:SetPoint("LEFT", ChponkerFrame.Checkbox4, "RIGHT", 5, 0)
@@ -135,7 +155,7 @@ ChponkerFrame.Checkbox5:SetPoint("TOPLEFT", ChponkerFrame.Checkbox4, "BOTTOMLEFT
 ChponkerFrame.Checkbox5:SetChecked(chponker_checker.raid)
 ChponkerFrame.Checkbox5:SetScript("OnClick", function(self)
     chponker_checker.raid = not chponker_checker.raid
-    print("Статус переменной raid:", chponker_checker.raid)
+    print("raid:", chponker_checker.raid)
 end)
 ChponkerFrame.Checkbox5.label = ChponkerFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ChponkerFrame.Checkbox5.label:SetPoint("LEFT", ChponkerFrame.Checkbox5, "RIGHT", 5, 0)
@@ -147,7 +167,7 @@ ChponkerFrame.Checkbox6:SetPoint("TOPLEFT", ChponkerFrame.Checkbox5, "BOTTOMLEFT
 ChponkerFrame.Checkbox6:SetChecked(chponker_checker.whisper)
 ChponkerFrame.Checkbox6:SetScript("OnClick", function(self)
     chponker_checker.whisper = not chponker_checker.whisper
-    print("Статус переменной whisper:", chponker_checker.whisper)
+    print("whisper:", chponker_checker.whisper)
 end)
 ChponkerFrame.Checkbox6.label = ChponkerFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ChponkerFrame.Checkbox6.label:SetPoint("LEFT", ChponkerFrame.Checkbox6, "RIGHT", 5, 0)
@@ -159,8 +179,20 @@ ChponkerFrame.Checkbox7:SetPoint("TOPLEFT", ChponkerFrame.Checkbox3, "BOTTOMLEFT
 ChponkerFrame.Checkbox7:SetChecked(chponker_checker.background)
 ChponkerFrame.Checkbox7:SetScript("OnClick", function(self)
     chponker_checker.background = not chponker_checker.background
-    print("Статус переменной background:", chponker_checker.background)
+    print("background:", chponker_checker.background)
 end)
 ChponkerFrame.Checkbox7.label = ChponkerFrame:CreateFontString(nil, "ARTWORK", "GameFontHighlight")
 ChponkerFrame.Checkbox7.label:SetPoint("LEFT", ChponkerFrame.Checkbox7, "RIGHT", 5, 0)
 ChponkerFrame.Checkbox7.label:SetText("Фоновые звуки")
+ChponkerFrame.Checkbox7:SetScript("OnClick", function(self)
+    chponker_checker.background = not chponker_checker.background
+    print("background:", chponker_checker.background)
+
+    -- В зависимости от значения background вызываем нужную функцию
+    if chponker_checker.background then
+        SoundOn()
+    else
+        SoundOff()
+    end
+end)
+
