@@ -282,6 +282,7 @@ local function LoadVariables()
         chponker_checker = ChponkerAddonDB.chponker_checker
     end
     chponker_checkbox_update()
+    ChponkerFrame:Hide()
 end
 
 -- Функция для сохранения переменных
