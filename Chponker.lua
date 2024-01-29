@@ -45,20 +45,21 @@ end
 local function handleChatEvent(self, event, ...)
     -- Определение типа события и выбор соответствующего звука
     local soundFile
-    if event == "CHAT_MSG_SAY" and chponker_checker.say == true then
+    if (event == "CHAT_MSG_SAY" or event == "CHAT_MSG_MONSTER_SAY") and chponker_checker.say == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\say.wav"
-    elseif event == "CHAT_MSG_YELL" and chponker_checker.yell == true then
+    elseif (event == "CHAT_MSG_YELL" or event == "CHAT_MSG_MONSTER_YELL") and chponker_checker.yell == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\yell.wav"
-    elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE") and chponker_checker.emote ==true then
+    elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_MONSTER_EMOTE") and chponker_checker.emote == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
-        if (event == "CHAT_MSG_RAID_WARNING" or event == "CHAT_MSG_RAID" or event == "CHAT_MSG_RAID_LEADER") and chponker_checker.raid == true then
-            soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
+    elseif (event == "CHAT_MSG_RAID_WARNING" or event == "CHAT_MSG_RAID" or event == "CHAT_MSG_RAID_LEADER") and chponker_checker.raid == true then
+        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
+    elseif (event == "CHAT_MSG_PARTY" or event == "CHAT_MSG_PARTY_LEADER") and chponker_checker.group == true then
+        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\group.wav"
     elseif event == "CHAT_MSG_WHISPER" and chponker_checker.whisper == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\whisper.ogg"
-        end
+    end
         
         -- Добавьте остальные типы событий с аналогичной логикой
-    end
 
     -- Если есть звук, проиграйте его
     if soundFile then
