@@ -1,8 +1,9 @@
 ## Interface: 30300
-## Title: |cff00488c[CbIPOPE3KA]|r Chponker
+## Title: Chponker
 ## Author: CbIPOPE3KA
 ## Version: 1.0
-## Notes: Горячие клавиши для ролевых действий.
+## Notes: Апгрейд звуковых уведомлений от @cheesecutter с окном настроек. 
+## SavedVariables: ChponkerAddonDB
 
 # Файлы Lua
 Chponker.lua
