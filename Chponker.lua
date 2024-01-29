@@ -11,46 +11,6 @@ local chponker_checker = {
     background = true
 }
 
--- Функция для загрузки переменных
-local function LoadVariables()
-    if ChponkerAddonDB == nil then
-        ChponkerAddonDB = {}
-    end
-
-    if ChponkerAddonDB.chponker_checker == nil then
-        ChponkerAddonDB.chponker_checker = {
-            say = true,
-            yell = true,
-            emote = true,
-            party = true,
-            raid = true,
-            whisper = true,
-            background = true
-        }
-    else
-        chponker_checker = ChponkerAddonDB.chponker_checker
-    end
-end
-
--- Функция для сохранения переменных
-local function SaveVariables()
-    ChponkerAddonDB.chponker_checker = chponker_checker
-end
-
--- Регистрация событий для загрузки и сохранения переменных
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("ADDON_LOADED")
-
-frame:SetScript("OnEvent", function(self, event, arg1)
-    if event == "ADDON_LOADED" and arg1 == "Chponker" then
-        LoadVariables()
-    elseif event == "PLAYER_LOGOUT" then
-        SaveVariables()
-    end
-end)
-
-
-
 --Функция для заглушения игры
 
 local function SoundOff()
@@ -182,7 +142,7 @@ print("4")
 -- Создаем чекбокс для Группы
 ChponkerFrame.Checkbox4 = CreateFrame("CheckButton", "ChponkerFrame_Checkbox4", ChponkerFrame, "UICheckButtonTemplate")
 ChponkerFrame.Checkbox4:SetPoint("LEFT", ChponkerFrame.Checkbox1.label, "RIGHT", 30, 0)
-ChponkerFrame.Checkbox4:SetChecked(chponker_checker.party)
+ChponkerFrame.Checkbox4:SetChecked(chponker_checker.party == true)
 ChponkerFrame.Checkbox4:SetScript("OnClick", function(self)
     chponker_checker.party = not chponker_checker.party
     print("party:", chponker_checker.party)
@@ -237,7 +197,54 @@ ChponkerFrame.Checkbox7:SetScript("OnClick", function(self)
     end
 end)
 
+--Апдейт чекбоксов
+
+local function chponker_checkbox_update()
+if chponker_checker.say == true then
+    ChponkerFrame.Checkbox1:SetChecked(true)
+else
+    ChponkerFrame.Checkbox1:SetChecked(false)
+end
+
+if chponker_checker.yell == true then
+    ChponkerFrame.Checkbox2:SetChecked(true)
+else
+    ChponkerFrame.Checkbox2:SetChecked(false)
+end
+
+if chponker_checker.emote == true then
+    ChponkerFrame.Checkbox3:SetChecked(true)
+else
+    ChponkerFrame.Checkbox3:SetChecked(false)
+end
+
+if chponker_checker.party == true then
+    ChponkerFrame.Checkbox4:SetChecked(true)
+else
+    ChponkerFrame.Checkbox4:SetChecked(false)
+end
+
+if chponker_checker.raid == true then
+    ChponkerFrame.Checkbox5:SetChecked(true)
+else
+    ChponkerFrame.Checkbox5:SetChecked(false)
+end
+
+if chponker_checker.whisper == true then
+    ChponkerFrame.Checkbox6:SetChecked(true)
+else
+    ChponkerFrame.Checkbox6:SetChecked(false)
+end
+
+if chponker_checker.background == true then
+    ChponkerFrame.Checkbox7:SetChecked(true)
+else
+    ChponkerFrame.Checkbox7:SetChecked(false)
+end
+end
+
 --Дебаг
+
 
 -- Функция для вывода переменных в print
 local function PrintVariables()
@@ -250,5 +257,46 @@ end
 ChponkerFrame:SetScript("OnMouseUp", function(self, button)
     if button == "RightButton" then
         PrintVariables()
+        chponker_checkbox_update()
+        
+    end
+end)
+
+-- Функция для загрузки переменных
+local function LoadVariables()
+    if ChponkerAddonDB == nil then
+        ChponkerAddonDB = {}
+    end
+
+    if ChponkerAddonDB.chponker_checker == nil then
+        ChponkerAddonDB.chponker_checker = {
+            say = true,
+            yell = true,
+            emote = true,
+            party = true,
+            raid = true,
+            whisper = true,
+            background = true
+        }
+    else
+        chponker_checker = ChponkerAddonDB.chponker_checker
+    end
+    chponker_checkbox_update()
+end
+
+-- Функция для сохранения переменных
+local function SaveVariables()
+    ChponkerAddonDB.chponker_checker = chponker_checker
+end
+
+-- Регистрация событий для загрузки и сохранения переменных
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("ADDON_LOADED")
+
+frame:SetScript("OnEvent", function(self, event, arg1)
+    if event == "ADDON_LOADED" and arg1 == "Chponker" then
+        LoadVariables()
+    elseif event == "PLAYER_LOGOUT" then
+        SaveVariables()
     end
 end)
