@@ -1,0 +1,13 @@
+## Interface: 30300
+## Title: |cff00488c[CbIPOPE3KA]|r Chponker
+## Author: CbIPOPE3KA
+## Version: 1.0
+## Notes: Горячие клавиши для ролевых действий.
+
+# Файлы Lua
+Chponker.lua
+# MyOtherFile.lua
+
+# Файлы XML
+# MyFrame.xml
+# MyOtherFrame.xml
