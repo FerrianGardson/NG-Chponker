@@ -69,12 +69,23 @@ end
 
 -- Регистрация фрейма для событий чата
 local chatFrame = CreateFrame("FRAME")
+
+-- Регистрация всех типов событий чата
 chatFrame:RegisterEvent("CHAT_MSG_SAY")
 chatFrame:RegisterEvent("CHAT_MSG_YELL")
+chatFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY") -- Добавлено для NPC say
+chatFrame:RegisterEvent("CHAT_MSG_MONSTER_YELL") -- Добавлено для NPC yell
 chatFrame:RegisterEvent("CHAT_MSG_EMOTE")
 chatFrame:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
--- Регистрируйте остальные типы событий
+chatFrame:RegisterEvent("CHAT_MSG_MONSTER_EMOTE") -- Добавлено для NPC emote
+chatFrame:RegisterEvent("CHAT_MSG_RAID_WARNING")
+chatFrame:RegisterEvent("CHAT_MSG_RAID")
+chatFrame:RegisterEvent("CHAT_MSG_RAID_LEADER")
+chatFrame:RegisterEvent("CHAT_MSG_PARTY")
+chatFrame:RegisterEvent("CHAT_MSG_PARTY_LEADER")
+chatFrame:RegisterEvent("CHAT_MSG_WHISPER")
 
+-- Установка обработчика событий для фрейма
 chatFrame:SetScript("OnEvent", handleChatEvent)
 
 -- Теперь chponker_checker содержит параметры для каждого типа сообщений, и они все инициализированы значением true
