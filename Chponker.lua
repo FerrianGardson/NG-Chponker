@@ -1,86 +1,55 @@
-local frame = CreateFrame("FRAME")
-frame:RegisterEvent("CHAT_MSG_SAY")
-frame:SetScript("OnEvent", function(self, event, ...)
-local soundFile = "Interface\\AddOns\\Chponker\\Sounds\\say.wav"
-PlaySoundFile(soundFile, "Master")
---[[ print("Реплика!") ]]
-end)
+-- Создание объекта для хранения состояний звуковых уведомлений
+local chponker_checker = {
+    say = true,
+    yell = true,
+    emote = true,
+    party = true,
+    monsterSay = true,
+    npcSay = true,
+    npcYell = true,
+    raid = true,
+    raidLeader = true,
+    groupLeader = true,
+    whisper = true,
+}
 
-local frame = CreateFrame("FRAME")
-frame:RegisterEvent("CHAT_MSG_YELL")
-frame:SetScript("OnEvent", function(self, event, ...)
-local soundFile = "Interface\\AddOns\\Chponker\\Sounds\\yell.wav"
-PlaySoundFile(soundFile, "Master")
---[[ print("Крик!") ]]
-end)
-
-
-local frame = CreateFrame("FRAME")
-frame:RegisterEvent("CHAT_MSG_EMOTE")
-frame:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
-frame:SetScript("OnEvent", function(self, event, ...)
-    local soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
+-- Функция для проигрывания звука
+local function playSound(soundFile)
     PlaySoundFile(soundFile, "Master")
-    --[[ print("Эмоут!") ]]
-end)
+end
 
-local frame = CreateFrame("FRAME")
-frame:RegisterEvent("CHAT_MSG_PARTY")
-frame:SetScript("OnEvent", function(self, event, ...)
-    local soundFile = "Interface\\AddOns\\Chponker\\Sounds\\say.wav"
-    PlaySoundFile(soundFile, "Master")
-    --[[ print("Сообщение в группе!") ]]
-end)
+-- Функция для обработки событий чата
+local function handleChatEvent(self, event, ...)
+    -- Определение типа события и выбор соответствующего звука
+    local soundFile
+    if event == "CHAT_MSG_SAY" and chponker_checker.say then
+        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\say.wav"
+    elseif event == "CHAT_MSG_YELL" and chponker_checker.yell then
+        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\yell.wav"
+    elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE") and chponker_checker.emote then
+        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
+    -- Добавьте остальные типы событий с аналогичной логикой
+    end
 
-local soundFile = "Interface\\AddOns\\Chponker\\Sounds\\say.wav"
-
-local frameSay = CreateFrame("FRAME")
-frameSay:RegisterEvent("CHAT_MSG_MONSTER_SAY")
-frameSay:SetScript("OnEvent", function(self, event, ...)
-    PlaySoundFile(soundFile, "Master")
-    --[[ print("NPC говорит!") ]]
-end)
-
-local frameNPCSay = CreateFrame("FRAME")
-frameNPCSay:RegisterEvent("CHAT_MSG_MONSTER_SAY")
-frameNPCSay:SetScript("OnEvent", function(self, event, ...)
-    PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.wav", "Master")
-    --[[ print("NPC говорит!") ]]
-end)
-
-local frameNPCYell = CreateFrame("FRAME")
-frameNPCYell:RegisterEvent("CHAT_MSG_MONSTER_YELL")
-frameNPCYell:SetScript("OnEvent", function(self, event, ...)
-    PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.wav", "Master")
-    --[[ print("NPC кричит!") ]]
-end)
-
-local frameRaid = CreateFrame("FRAME")
-frameRaid:RegisterEvent("CHAT_MSG_RAID")
-frameRaid:SetScript("OnEvent", function(self, event, ...)
-    PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.wav", "Master")
-    print("Сообщение в рейд!")
-end)
+    -- Если есть звук, проиграйте его
+    if soundFile then
+        playSound(soundFile)
+    end
+end
 
 
 
-local frameRaidLeader = CreateFrame("FRAME")
-frameRaidLeader:RegisterEvent("CHAT_MSG_RAID_LEADER")
-frameRaidLeader:SetScript("OnEvent", function(self, event, ...)
-    PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.wav", "Master")
-    --[[ print("Лидер рейда говорит!") ]]
-end)
+-- Регистрация фрейма для событий чата
+local chatFrame = CreateFrame("FRAME")
+chatFrame:RegisterEvent("CHAT_MSG_SAY")
+chatFrame:RegisterEvent("CHAT_MSG_YELL")
+chatFrame:RegisterEvent("CHAT_MSG_EMOTE")
+chatFrame:RegisterEvent("CHAT_MSG_TEXT_EMOTE")
+-- Регистрируйте остальные типы событий
 
-local frameGroupLeader = CreateFrame("FRAME")
-frameGroupLeader:RegisterEvent("CHAT_MSG_PARTY_LEADER")
-frameGroupLeader:SetScript("OnEvent", function(self, event, ...)
-    PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.wav", "Master")
-    --[[ print("Лидер группы говорит!") ]]
-end)
+chatFrame:SetScript("OnEvent", handleChatEvent)
 
-local frameWhisper = CreateFrame("FRAME")
-frameWhisper:RegisterEvent("CHAT_MSG_WHISPER")
-frameWhisper:SetScript("OnEvent", function(self, event, ...)
-    PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\whisper.ogg", "Master")
-    --[[ print("Получено личное сообщение!") ]]
-end)
+-- Теперь chponker_checker содержит параметры для каждого типа сообщений, и они все инициализированы значением true
+-- Вы можете использовать chponker_checker.say, chponker_checker.yell и т. д., чтобы проверить, включен ли звук для конкретного типа сообщения
+
+
