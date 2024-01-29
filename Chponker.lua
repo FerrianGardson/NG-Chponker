@@ -11,59 +11,6 @@ local chponker_checker = {
     background = true
 }
 
--- Обработчик события ADDON_LOADED
-local function OnAddonLoaded(event, name)
-    if name == addonName then
-        -- Создаем объект для хранения состояний звуковых уведомлений, если его нет
-        if not ChponkerDB then
-            ChponkerDB = {
-                say = true,
-                yell = true,
-                emote = true,
-                party = true,
-                raid = true,
-                whisper = true,
-                background = true
-            }
-        end
-
-        -- Загружаем сохраненные данные
-        LoadChponkerVariables()
-    end
-end
-
--- Регистрация события ADDON_LOADED
-local frame = CreateFrame("FRAME")
-frame:RegisterEvent("ADDON_LOADED")
-frame:SetScript("OnEvent", OnAddonLoaded)
-
--- Функция для сохранения переменных в базе данных
-function SaveChponkerVariables()
-    ChponkerDB = ChponkerDB or {}  -- Если база данных еще не существует, создаем ее
-
-    ChponkerDB.say = chponker_checker.say
-    ChponkerDB.yell = chponker_checker.yell
-    ChponkerDB.emote = chponker_checker.emote
-    ChponkerDB.party = chponker_checker.party
-    ChponkerDB.raid = chponker_checker.raid
-    ChponkerDB.whisper = chponker_checker.whisper
-    ChponkerDB.background = chponker_checker.background
-end
-
--- Функция для загрузки переменных из базы данных
-function LoadChponkerVariables()
-    ChponkerDB = ChponkerDB or {}  -- Если база данных еще не существует, создаем ее
-
-    chponker_checker.say = ChponkerDB.say or true
-    chponker_checker.yell = ChponkerDB.yell or true
-    chponker_checker.emote = ChponkerDB.emote or true
-    chponker_checker.party = ChponkerDB.party or true
-    chponker_checker.raid = ChponkerDB.raid or true
-    chponker_checker.whisper = ChponkerDB.whisper or true
-    chponker_checker.background = ChponkerDB.background or true
-end
-
-
 --Функция для заглушения игры
 
 local function SoundOff()
@@ -242,7 +189,6 @@ ChponkerFrame.Checkbox7.label:SetText("Фоновые звуки")
 ChponkerFrame.Checkbox7:SetScript("OnClick", function(self)
     chponker_checker.background = not chponker_checker.background
     print("background:", chponker_checker.background)
-
     -- В зависимости от значения background вызываем нужную функцию
     if chponker_checker.background then
         SoundOn()
