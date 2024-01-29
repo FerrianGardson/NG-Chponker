@@ -1,4 +1,4 @@
-print("Чпонькер активирован, вбейте /chponker или /cp для настройки.")
+print("Чпонькер (29.01) активирован, вбейте /chponker или /cp для настройки.")
 
 local addonName = "Chponker"
 local chponker_checker = {
@@ -45,12 +45,18 @@ end
 local function handleChatEvent(self, event, ...)
     -- Определение типа события и выбор соответствующего звука
     local soundFile
-    if event == "CHAT_MSG_SAY" and chponker_checker.say then
+    if event == "CHAT_MSG_SAY" and chponker_checker.say == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\say.wav"
-    elseif event == "CHAT_MSG_YELL" and chponker_checker.yell then
+    elseif event == "CHAT_MSG_YELL" and chponker_checker.yell == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\yell.wav"
-    elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE") and chponker_checker.emote then
+    elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE") and chponker_checker.emote ==true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
+        if (event == "CHAT_MSG_RAID_WARNING" or event == "CHAT_MSG_RAID" or event == "CHAT_MSG_RAID_LEADER") and chponker_checker.raid == true then
+            soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
+    elseif event == "CHAT_MSG_WHISPER" and chponker_checker.whisper == true then
+        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\whisper.ogg"
+        end
+        
         -- Добавьте остальные типы событий с аналогичной логикой
     end
 
