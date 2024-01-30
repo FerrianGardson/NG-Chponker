@@ -53,8 +53,8 @@ local function handleChatEvent(self, event, ...)
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
     elseif (event == "CHAT_MSG_RAID_WARNING" or event == "CHAT_MSG_RAID" or event == "CHAT_MSG_RAID_LEADER") and chponker_checker.raid == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\emote.wav"
-    elseif (event == "CHAT_MSG_PARTY" or event == "CHAT_MSG_PARTY_LEADER") and chponker_checker.group == true then
-        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\group.wav"
+    elseif (event == "CHAT_MSG_PARTY" or event == "CHAT_MSG_PARTY_LEADER") and chponker_checker.party == true then
+        soundFile = "Interface\\AddOns\\Chponker\\Sounds\\say.wav"
     elseif event == "CHAT_MSG_WHISPER" and chponker_checker.whisper == true then
         soundFile = "Interface\\AddOns\\Chponker\\Sounds\\whisper.ogg"
     end
