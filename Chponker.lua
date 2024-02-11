@@ -50,10 +50,12 @@ local function handleChatEvent(self, event, ...)
     elseif (event == "CHAT_MSG_RAID" or event == "CHAT_MSG_RAID_LEADER") and chponker_checker.raid then
         PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\emote.wav", "Master")
     elseif event == "CHAT_MSG_RAID_WARNING" and chponker_checker.raid_warning then
+        --PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\yell.wav", "Master")
         PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\warning.ogg", "Master")
     elseif (event == "CHAT_MSG_PARTY" or event == "CHAT_MSG_PARTY_LEADER") and chponker_checker.party then
         PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.wav", "Master")
     elseif event == "CHAT_MSG_WHISPER" and chponker_checker.whisper then
+        --PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\yell.wav", "Master")
         PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\whisper.ogg", "Master")
     end
 end
