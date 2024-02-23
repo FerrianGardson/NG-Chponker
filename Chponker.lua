@@ -39,51 +39,65 @@ local function SoundOn()
 end
 
 -- Функция для обработки событий чата
+-- Функция для обработки событий чата
 local function handleChatEvent(self, event, ...)
     -- Получаем отправителя и сообщение из списка аргументов
     local _, _, _, _, sender, _, _, _, _, _, _, guid = ...
     local message = select(1, ...)
-    
+
+    local targetName = UnitName("target")
+    local focusName = UnitName("focus")
+
     -- Проверяем, если отправитель не равен nil (т.е. если сообщение отправлено другим игроком)
     if sender then
-        -- Определение типа события и выбор соответствующего звука
-        if (event == "CHAT_MSG_SAY" or event == "CHAT_MSG_MONSTER_SAY") and chponker_checker.say then
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.ogg", "Master")
-        elseif (event == "CHAT_MSG_YELL" or event == "CHAT_MSG_MONSTER_YELL") and chponker_checker.yell then
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\yell.ogg", "Master")
-        elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_MONSTER_EMOTE") and
-            chponker_checker.emote then
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\emote.ogg", "Master")
-        elseif (event == "CHAT_MSG_RAID" or event == "CHAT_MSG_RAID_LEADER") and chponker_checker.raid then
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\beat.ogg", "Master")
-        elseif event == "CHAT_MSG_RAID_WARNING" and chponker_checker.raid_warning then
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\rw.ogg", "Master")
-        elseif (event == "CHAT_MSG_PARTY" or event == "CHAT_MSG_PARTY_LEADER") and chponker_checker.party then
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\moan.ogg", "Master")
-        elseif event == "CHAT_MSG_WHISPER" and chponker_checker.whisper then
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\kiss.ogg", "Master")
-        end
 
-        -- Получаем имена таргета и фокуса отправителя
-        local targetName = UnitName("target")
-        local focusName = UnitName("focus")
-
-        -- Проверяем совпадение имен отправителя с именами таргета и фокуса
-        if targetName and targetName == sender then
-            -- Если тип сообщения "сказал", проигрываем звук "kiss.ogg"
-            if event == "CHAT_MSG_SAY" then
-                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\kiss.ogg", "Master")
-            -- Если тип сообщения "эмоция", проигрываем звук "moan.ogg"
-            elseif event == "CHAT_MSG_EMOTE" then
+        if sender ~= targetName and sender ~= focusName then
+            -- Определение типа события и выбор соответствующего звука
+            if (event == "CHAT_MSG_SAY" or event == "CHAT_MSG_MONSTER_SAY") and chponker_checker.say then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\say.ogg", "Master")
+            elseif (event == "CHAT_MSG_YELL" or event == "CHAT_MSG_MONSTER_YELL") and chponker_checker.yell then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\yell.ogg", "Master")
+            elseif (event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_MONSTER_EMOTE") and
+                chponker_checker.emote then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\emote.ogg", "Master")
+            elseif (event == "CHAT_MSG_RAID" or event == "CHAT_MSG_RAID_LEADER") and chponker_checker.raid then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\beat.ogg", "Master")
+            elseif event == "CHAT_MSG_RAID_WARNING" and chponker_checker.raid_warning then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\rw.ogg", "Master")
+            elseif (event == "CHAT_MSG_PARTY" or event == "CHAT_MSG_PARTY_LEADER") and chponker_checker.party then
                 PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\moan.ogg", "Master")
+            elseif event == "CHAT_MSG_WHISPER" and chponker_checker.whisper then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\kiss.ogg", "Master")
             end
         end
+
+        -- Проверяем совпадение имен отправителя с именами таргета и фокуса
+        if focusName and focusName == sender then
+            -- Если сообщение от фокуса
+            if event == "CHAT_MSG_SAY" or event == "CHAT_MSG_MONSTER_SAY" then
+                -- Если реплика от фокуса, проигрываем звук "jump.ogg"
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\jump.ogg", "Master")
+                print('Таргет-эмоут')
+            elseif event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_MONSTER_EMOTE" then
+                -- Если эмоут от фокуса, проигрываем звук "land.ogg"
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\emote.ogg", "Master")
+                print('Фокус-эмоут')
+            end
+        elseif targetName and targetName == sender then
+            -- Если сообщение от таргета
+            if event == "CHAT_MSG_SAY" or event == "CHAT_MSG_MONSTER_SAY" then
+                -- Если реплика от таргета, проигрываем звук "moan.ogg"
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\moan.ogg", "Master")
+                print('Таргет-сэй')
+            elseif event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_MONSTER_EMOTE" then
+                -- Если эмоут от таргета, проигрываем звук "kiss.ogg"
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\kiss.ogg", "Master")
+                print('Таргет-эмоут')
+            end
+        end
+
     end
 end
-
-
-
-
 
 -- Регистрация фрейма для событий чата
 local chatFrame = CreateFrame("FRAME")
