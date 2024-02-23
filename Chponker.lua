@@ -77,22 +77,22 @@ local function handleChatEvent(self, event, ...)
             if event == "CHAT_MSG_SAY" or event == "CHAT_MSG_MONSTER_SAY" then
                 -- Если реплика от фокуса, проигрываем звук "jump.ogg"
                 PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\jump.ogg", "Master")
-                print('Таргет-эмоут')
+                --print('Таргет-эмоут')
             elseif event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_MONSTER_EMOTE" then
                 -- Если эмоут от фокуса, проигрываем звук "land.ogg"
                 PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\emote.ogg", "Master")
-                print('Фокус-эмоут')
+                --print('Фокус-эмоут')
             end
         elseif targetName and targetName == sender then
             -- Если сообщение от таргета
             if event == "CHAT_MSG_SAY" or event == "CHAT_MSG_MONSTER_SAY" then
-                -- Если реплика от таргета, проигрываем звук "moan.ogg"
+                ---- Если реплика от таргета, проигрываем звук "moan.ogg"
                 PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\moan.ogg", "Master")
                 print('Таргет-сэй')
             elseif event == "CHAT_MSG_EMOTE" or event == "CHAT_MSG_TEXT_EMOTE" or event == "CHAT_MSG_MONSTER_EMOTE" then
                 -- Если эмоут от таргета, проигрываем звук "kiss.ogg"
                 PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\kiss.ogg", "Master")
-                print('Таргет-эмоут')
+                --print('Таргет-эмоут')
             end
         end
 
