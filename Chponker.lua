@@ -40,9 +40,10 @@ end
 
 -- Функция для обработки событий чата
 local function handleChatEvent(self, event, ...)
-    -- Получаем отправителя из списка аргументов
-    local _, _, _, _, sender = ...
-
+    -- Получаем отправителя и сообщение из списка аргументов
+    local _, _, _, _, sender, _, _, _, _, _, _, guid = ...
+    local message = select(1, ...)
+    
     -- Проверяем, если отправитель не равен nil (т.е. если сообщение отправлено другим игроком)
     if sender then
         -- Определение типа события и выбор соответствующего звука
@@ -68,15 +69,21 @@ local function handleChatEvent(self, event, ...)
         local focusName = UnitName("focus")
 
         -- Проверяем совпадение имен отправителя с именами таргета и фокуса
-        if focusName and focusName == sender then
-            -- Если сообщение от таргета, проигрываем звук "kiss.ogg"
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\cheer.ogg", "Master")
-        elseif targetName and targetName == sender then
-            -- Если сообщение от персонажа в фокусе, проигрываем звук "moan.ogg"
-            PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\whistle.ogg", "Master")
+        if targetName and targetName == sender then
+            -- Если тип сообщения "сказал", проигрываем звук "kiss.ogg"
+            if event == "CHAT_MSG_SAY" then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\kiss.ogg", "Master")
+            -- Если тип сообщения "эмоция", проигрываем звук "moan.ogg"
+            elseif event == "CHAT_MSG_EMOTE" then
+                PlaySoundFile("Interface\\AddOns\\Chponker\\Sounds\\moan.ogg", "Master")
+            end
         end
     end
 end
+
+
+
+
 
 -- Регистрация фрейма для событий чата
 local chatFrame = CreateFrame("FRAME")
